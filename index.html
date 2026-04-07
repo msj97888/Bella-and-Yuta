@@ -51,7 +51,7 @@
     position: absolute;
     width: 8px;
     height: 12px;
-    background: radial-gradient(ellipse, rgba(65,124,73,0.35), transparent);
+    background: radial-gradient(ellipse, rgba(143,181,200,0.7), transparent);
     border-radius: 50% 0 50% 0;
     animation: drift linear infinite;
     pointer-events: none;
@@ -171,20 +171,7 @@
     background: var(--soft);
   }
 
-  .photo-card::before {
-    content: '';
-    position: absolute;
-    inset: 8px;
-    border: 1px solid rgba(201,169,110,0.5);
-    z-index: 2;
-    pointer-events: none;
-    transition: inset 0.4s ease, border-color 0.4s;
-  }
 
-  .photo-card:hover::before {
-    inset: 4px;
-    border-color: rgba(201,169,110,0.9);
-  }
 
   .photo-placeholder {
     width: 100%;
@@ -400,9 +387,13 @@
   .lightbox.open { display: flex; }
 
   .lightbox-inner {
-    max-width: 700px;
+    max-width: 95vw;
+    max-height: 95vh;
     text-align: center;
     color: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .lightbox-inner p {
@@ -544,7 +535,7 @@
 <div class="details">
   <div class="detail-item">
     <span class="label">Together Since</span>
-    <span class="value">DATE</span>
+    <span class="value">September 3, 2023</span>
   </div>
   <div class="detail-item">
     <span class="label">The Proposal</span>
@@ -578,14 +569,28 @@
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
   <div class="lightbox-inner">
-    <p>Your beautiful photo will appear here</p>
-    <span>Click anywhere to close</span>
+    <img id="lightbox-img" src="" alt="Photo" style="display:none;max-width:90vw;max-height:85vh;object-fit:contain;border-radius:4px;" />
+    <div id="lightbox-placeholder">
+      <p>Your beautiful photo will appear here</p>
+      <span>Click anywhere to close</span>
+    </div>
   </div>
 </div>
 
 <script>
-  function openLightbox() {
-    document.getElementById('lightbox').classList.add('open');
+  function openLightbox(el) {
+    const img = el.querySelector('img');
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    if (img) {
+      lbImg.src = img.src;
+      lbImg.style.display = 'block';
+      document.getElementById('lightbox-placeholder').style.display = 'none';
+    } else {
+      lbImg.style.display = 'none';
+      document.getElementById('lightbox-placeholder').style.display = 'block';
+    }
+    lb.classList.add('open');
   }
   function closeLightbox() {
     document.getElementById('lightbox').classList.remove('open');
